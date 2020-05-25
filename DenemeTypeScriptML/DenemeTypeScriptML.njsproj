@@ -32,7 +32,7 @@
     <None Include="app.ts" />
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <Content Include="train_data.js">
+    <Content Include="train_data.ts">
       <SubType>Code</SubType>
     </Content>
     <Content Include="tsconfig.json" />

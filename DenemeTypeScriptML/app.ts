@@ -1,17 +1,38 @@
 import * as brain from "brain.js";
+import * as fs from 'fs';
 
-const net = new brain.NeuralNetwork();
+const FILE_NAME = 'data.json';
 
-net.train([
-    { input: { r: 0.03, g: 0.7, b: 0.5 }, output: { black: 1 } },
-    { input: { r: 0.16, g: 0.09, b: 0.2 }, output: { white: 1 } },
-    { input: { r: 0.5, g: 0.5, b: 1.0 }, output: { white: 1 } },
-]);
+class MachineLearning {
+    neuralNetwork: brain.NeuralNetwork;
 
-const output = net.run({ r: 1, g: 0.4, b: 0 }); // { white: 0.99, black: 0.002 }
+    constructor() {
+        this.neuralNetwork = new brain.NeuralNetwork();
+    }
 
-console.log(output);
+    run(data: any): any {
+        const output = this.neuralNetwork.run(data);
+        return output;
+    }
 
-setTimeout(function () {
-    process.exit();
-}, 50000);
+    loadFromFile(filename: string) {
+        const file = fs.readFileSync(filename);
+        const data = file.toString();
+        this.neuralNetwork.fromJSON(data as unknown as brain.INeuralNetworkJSON);
+    }
+}
+
+function waitAndClose(time: number) {
+    setTimeout(function () {
+        process.exit();
+    }, time);
+}
+
+
+var data = {};
+const ml = new MachineLearning();
+ml.loadFromFile(FILE_NAME);
+const result = ml.run(data);
+console.log(result);
+
+waitAndClose(50000);
